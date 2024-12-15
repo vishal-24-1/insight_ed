@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-const Result = ({ insights }) => {
+const Result = ({ insights, toggleChatbot }) => { // Added toggleChatbot prop
   const navigate = useNavigate();
 
   return (
@@ -62,6 +62,23 @@ const Result = ({ insights }) => {
           </p>
         )}
       </div>
+
+      {/* Chatbot Toggle Button */}
+      <button
+        onClick={toggleChatbot}
+        style={{
+          marginTop: "20px",
+          padding: "10px 20px",
+          fontSize: "16px",
+          backgroundColor: "#4A90E2",
+          color: "#fff",
+          border: "none",
+          borderRadius: "5px",
+          cursor: "pointer",
+        }}
+      >
+        Chat with InsightEd AI
+      </button>
 
       <button
         onClick={() => navigate("/")}

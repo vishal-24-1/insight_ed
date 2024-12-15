@@ -9,7 +9,14 @@ exports.processWithGemini = async ({ questionPaper, answerSheet, answerKey, prom
     formData.append('answerSheet', fs.createReadStream(answerSheet.path));
     formData.append('answerKey', fs.createReadStream(answerKey.path));
     formData.append('prompt', prompt);
-
+    console.log("Gemini API URL:", process.env.GEMINI_API_URL);
+    console.log("Gemini API Key:", process.env.GEMINI_API_KEY);
+    console.log("Payload to Gemini API:", {
+      questionPaper,
+      answerSheet,
+      answerKey,
+      prompt,
+    });
     console.log("Sending request to Gemini API...");
     const response = await axios.post(process.env.GEMINI_API_URL, formData, {
       headers: {

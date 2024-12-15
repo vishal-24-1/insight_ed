@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const Home = ({ setInsights }) => {
+const Home = ({ setInsights, setIsWaiting }) => { // Added setIsWaiting prop
   const [questionPaper, setQuestionPaper] = useState(null);
   const [answerSheet, setAnswerSheet] = useState(null);
   const [answerKey, setAnswerKey] = useState(null);
@@ -28,6 +28,10 @@ const Home = ({ setInsights }) => {
     formData.append("answerKey", answerKey);
 
     try {
+      // Set waiting state and navigate to the waiting page
+      setIsWaiting(true);
+      navigate("/waiting");
+
       const response = await axios.post("http://localhost:5000/api/upload", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -38,8 +42,9 @@ const Home = ({ setInsights }) => {
         },
       });
 
-      // Reset progress and navigate to result page
+      // Reset progress, stop waiting state, and navigate to result page
       setUploadProgress(0);
+      setIsWaiting(false);
       setInsights(response.data.insights);
       navigate("/result");
     } catch (error) {
@@ -47,6 +52,7 @@ const Home = ({ setInsights }) => {
       console.log("Server Response:", error.response);
       alert(error.response?.data?.message || "An error occurred. Please try again.");
       setUploadProgress(0); // Reset progress on error
+      setIsWaiting(false); // Stop waiting state
     }
   };
 
